@@ -18,7 +18,7 @@ weatherModule.service('weatherService', function($http) {
           return service.curWeather[location];
         
         service.curWeather[location] = { temp: {}, clouds: null };
-        $http.get('http://api.openweathermap.org/data/2.5/weather?q='+location+'&units='+units+'&cnt=5').success(function(data) {
+        $http.get('http://api.openweathermap.org/data/2.5/weather?q='+location+'&units='+units+'&cnt=5&APPID='+apiKey).success(function(data) {
             if (data) {
                 if (data.main) {
                     service.curWeather[location].temp.current = data.main.temp;
@@ -39,7 +39,7 @@ weatherModule.service('weatherService', function($http) {
         
         service.forecast[location] = {}
 
-        $http.get('http://api.openweathermap.org/data/2.5/forecast/daily?q='+location+'&units='+units+'&cnt=10').success(function(data) {
+        $http.get('http://api.openweathermap.org/data/2.5/forecast/daily?q='+location+'&units='+units+'&cnt=10&APPID='+apiKey).success(function(data) {
             if (data) {
               angular.copy(data,service.forecast[location]);
             }
@@ -93,7 +93,8 @@ weatherModule.directive('todaysWeather', function(weatherService){
       location:'@',
       useGoogleImages: '=',
       customSize: '=?',
-      units: '@?'
+      units: '@?',
+      apiKey:'@'
     },
     templateUrl:'templates/currentWeatherDisplay.tpl.html',
     link: function(scope, iElem, iAttr){
@@ -111,7 +112,8 @@ weatherModule.directive('weatherForecast', function(weatherService){
       location:'@',
       useGoogleImages:'=',
       customSize:'=?',
-      units:'@?'
+      units:'@?',
+      apiKey:'@'
     },
     restrict:'E',
     replace:true,
@@ -137,7 +139,8 @@ weatherModule.directive('weatherDisplay', function(){
       weather:'=',
       customSize:'=',
       useGoogleImages:'=',
-      units:'='
+      units:'=',
+      apiKey:'@'
     },
     restrict:'E',
     replace:true,
